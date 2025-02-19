@@ -1,0 +1,22 @@
+Private Sub logIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLogin.Click
+        Dim connectionLogin As New SqlConnection(connectionstring)
+        sqlLogin = "SELECT (1000) [Login]
+      ,[Password]
+      ,[Role]
+  FROM [RestaurantDatabase].[dbo].[Login] where  Login ='" & txtUsername.Text & "'"
+        connectionLogin.Open()
+        sAdapterLogin = New SqlDataAdapter(sqlLogin, connectionLogin)
+        SDsLogin = New DataSet()
+        sAdapterLogin.Fill(SDsLogin, "login")
+        sTableLogin = SDsLogin.Tables("login")
+        If sTableLogin.Rows.Count = 0 Then
+            MessageBox.Show("Wrong Username", "Unauthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        Else
+            If sTableLogin.Rows.Item(0).Item("Password") = txtPassword.Text Then
+                formTasks.Show()
+
+            Else
+                MessageBox.Show("Wrong Password entered", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            End If
+        End If
+    End Sub
